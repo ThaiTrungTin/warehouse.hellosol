@@ -4,77 +4,123 @@
     <base target="_top">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bảng điều khiển</title>
+    <!-- THÊM SCRIPT CHO ICON HOẠT HÌNH -->
+    <script src="https://animatedicons.co/scripts/embed-animated-icons.js"></script>
     <style>
       :root {
         --sidebar-width: 260px;
         --transition-speed: 0.3s;
+        --primary-color: #4285F4;
+        --primary-color-light: #e8f0fe;
+        --text-color-dark: #202124;
+        --text-color-light: #5f6368;
+        --hover-bg-color: #f1f3f4;
+        --border-color: #e0e0e0;
       }
+      
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-        margin: 0; display: flex; height: 100vh; background-color: #f7f9fc; overflow: hidden;
+        font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        margin: 0; 
+        display: flex; 
+        height: 100vh; 
+        background-color: #f7f9fc; 
+        overflow: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
+
       .sidebar {
-        width: var(--sidebar-width); background-color: #ffffff; box-shadow: 2px 0 5px rgba(0,0,0,0.05); display: flex;
-        flex-direction: column; padding: 20px 10px; flex-shrink: 0; z-index: 10;
-        transition: margin-left var(--transition-speed) ease-in-out; margin-left: 0;
+        width: var(--sidebar-width); 
+        background-color: #ffffff; 
+        border-right: 1px solid #eef2f9;
+        display: flex;
+        flex-direction: column; 
+        padding: 20px;
+        box-sizing: border-box;
+        flex-shrink: 0; 
+        z-index: 10;
+        transition: margin-left var(--transition-speed) ease-in-out; 
+        margin-left: 0;
       }
-      .sidebar.collapsed { margin-left: calc(-1 * var(--sidebar-width)); }
-      .sidebar-header { text-align: center; padding: 0 10px 20px 10px; margin-bottom: 10px; border-bottom: 1px solid #e0e0e0; }
-      .sidebar-header h2 { margin: 0; color: #4285F4; font-size: 22px; }
+      .sidebar.collapsed { margin-left: calc(-1 * var(--sidebar-width) + 20px); }
+      
+      .sidebar-header {
+        text-align: center;
+        padding-bottom: 20px;
+        margin-bottom: 15px;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .sidebar-header h2 {
+        margin: 0;
+        color: var(--primary-color);
+        font-size: 20px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      
       .nav-list { flex-grow: 1; overflow-y: auto; }
-      .nav-item { position: relative; }
+      
       .nav-button {
-        background-color: transparent; color: #3c4043; border: none; padding: 15px 20px; font-size: 16px;
-        font-weight: 500; border-radius: 8px; cursor: pointer; transition: background-color 0.2s, color 0.2s;
-        width: 100%; text-align: left; margin-bottom: 8px; display: block;
+        background-color: transparent; 
+        color: var(--text-color-dark); 
+        border: none; 
+        padding: 12px 15px;
+        font-size: 15px;
+        font-weight: 500; 
+        border-radius: 10px;
+        cursor: pointer; 
+        transition: all 0.2s ease-in-out;
+        width: 100%; 
+        text-align: left; 
+        margin-bottom: 8px; 
+        display: flex;
+        align-items: center;
+        gap: 14px;
       }
-      .nav-button:hover { background-color: #f1f3f4; }
-      .nav-button.active { background-color: #e8f0fe; color: #1967d2; font-weight: bold; }
-      .delete-app-btn {
-        position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none;
-        cursor: pointer; opacity: 0; transition: opacity 0.2s; padding: 5px; border-radius: 50%;
+      .nav-button:hover { 
+        background-color: var(--hover-bg-color); 
+        color: var(--text-color-dark);
       }
-      .nav-item:hover .delete-app-btn { opacity: 0.6; }
-      .delete-app-btn:hover { opacity: 1; background-color: #e0e0e0; }
-      .sidebar-footer { padding-top: 10px; border-top: 1px solid #e0e0e0; }
-      .add-app-btn { font-weight: 500; color: #1967d2; }
-      .modal-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);
-        display: none; justify-content: center; align-items: center; z-index: 2000;
+      .nav-button.active { 
+        background-color: var(--primary-color-light); 
+        color: var(--primary-color); 
+        font-weight: 700; 
       }
-      .modal-content { background: white; padding: 25px 30px; border-radius: 12px; width: 90%; max-width: 400px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-      .modal-content h3 { margin-top: 0; }
-      .modal-content input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
-      .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
-      .modal-actions button { padding: 10px 20px; border-radius: 6px; border: none; cursor: pointer; }
-      #save-app-btn { background-color: #4285F4; color: white; }
-      #cancel-add-app-btn { background-color: #f1f3f4; }
+      
+      /* Căn chỉnh kích thước cho icon hoạt hình */
+      .nav-button animated-icons {
+        width: 24px !important;
+        height: 24px !important;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
       .main-content { flex-grow: 1; position: relative; }
+      
       .menu-toggle-btn {
         position: fixed; top: 15px; left: 15px; background: #ffffff; border: none; cursor: pointer;
         padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-        transition: left var(--transition-speed) ease-in-out; box-shadow: 0 2px 6px rgba(0,0,0,0.15); z-index: 1000;
+        transition: left var(--transition-speed) ease-in-out, transform 0.2s ease-in-out; 
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15); z-index: 1000;
+      }
+      .menu-toggle-btn:hover {
+        transform: scale(1.1);
       }
       body.sidebar-open .menu-toggle-btn { left: calc(var(--sidebar-width) + 15px); }
 
-      /* --- CSS CẬP NHẬT CHO IFRAME --- */
-      #iframe-container {
-        width: 100%;
-        height: 100%;
-        position: relative;
-      }
+      #iframe-container { width: 100%; height: 100%; position: relative; }
       .app-iframe {
-        border: none;
-        width: 100%;
-        height: 100%;
-        position: absolute; /* Xếp chồng các iframe lên nhau */
-        top: 0;
-        left: 0;
-        display: none; /* Mặc định ẩn tất cả */
+        border: none; width: 100%; height: 100%;
+        position: absolute; top: 0; left: 0;
+        display: none; 
+        background-color: #ffffff; /* Thêm màu nền cho iframe */
       }
-      .app-iframe.active {
-        display: block; /* Chỉ hiện iframe có class active */
-      }
+      .app-iframe.active { display: block; }
     </style>
   </head>
   <body class="sidebar-open">
@@ -84,152 +130,133 @@
     </button>
     
     <div class="sidebar">
-      <div class="sidebar-header"><h2>Menu</h2></div>
+      <div class="sidebar-header">
+        <h2>
+           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          <span>Bảng điều khiển</span>
+        </h2>
+      </div>
+      <!-- Menu tĩnh sẽ được JS render vào đây -->
       <div id="nav-list" class="nav-list"></div>
-      <div class="sidebar-footer"><button class="nav-button add-app-btn" onclick="openAddAppModal()">+ Thêm App</button></div>
     </div>
 
     <div class="main-content">
-        <!-- Vùng chứa các iframe -->
         <div id="iframe-container"></div>
     </div>
-    
-    <div id="add-app-modal" class="modal-overlay">
-      <div class="modal-content">
-        <h3>Thêm ứng dụng mới</h3>
-        <input type="text" id="new-app-name" placeholder="Nhập tên ứng dụng">
-        <input type="url" id="new-app-url" placeholder="Dán URL ứng dụng web">
-        <div class="modal-actions">
-          <button id="cancel-add-app-btn" onclick="closeAddAppModal()">Hủy</button>
-          <button id="save-app-btn" onclick="saveNewApp()">Lưu</button>
-        </div>
-      </div>
-    </div>
 
+    <!-- SCRIPT ĐÃ ĐƯỢC VIẾT LẠI HOÀN TOÀN -->
     <script>
-      // --- PHẦN LOGIC SCRIPT ĐƯỢC CẬP NHẬT HOÀN TOÀN ---
-
-      const iframeContainer = document.getElementById('iframe-container');
-      const toggleBtn = document.getElementById('menu-toggle');
-      const sidebar = document.querySelector('.sidebar');
-      const navList = document.getElementById('nav-list');
-      const modal = document.getElementById('add-app-modal');
-      let appList = [];
-
-      const defaultApps = [
-        { name: "WareHouse", url: "https://script.google.com/macros/s/AKfycbztF4W6WHWAHmluhINyDbrXYfk62Pq_ODOejCI6UaSVL9vMIEdUPiv90DHZPDm8kQ0t/exec" },
-        { name: "Scan & Export", url: "https://script.google.com/macros/s/AKfycbzyhcLvg4ZVhexKSP8m3dLjVqp2HSnJq4HRYkrytzlc04f33pzEW-hW0T4vDBdYdFp-4Q/exec" }
-      ];
-
-      // Hàm vẽ lại menu và tạo các iframe tương ứng
-      function renderAppInfrastructure() {
-        navList.innerHTML = '';
-        iframeContainer.innerHTML = '';
-        appList.forEach((app, index) => {
-          // 1. Tạo nút bấm trong menu
-          const navItem = document.createElement('div');
-          navItem.className = 'nav-item';
-          const button = document.createElement('button');
-          button.id = `btnApp${index}`;
-          button.className = 'nav-button';
-          button.textContent = app.name;
-          button.onclick = () => showApp(index);
-          const deleteBtn = document.createElement('button');
-          deleteBtn.className = 'delete-app-btn';
-          deleteBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24"><path fill="#5f6368" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>`;
-          deleteBtn.title = `Xóa ${app.name}`;
-          deleteBtn.onclick = (e) => { e.stopPropagation(); deleteApp(index); };
-          navItem.appendChild(button);
-          navItem.appendChild(deleteBtn);
-          navList.appendChild(navItem);
-
-          // 2. Tạo iframe tương ứng
-          const iframe = document.createElement('iframe');
-          iframe.id = `iframe-app-${index}`;
-          iframe.className = 'app-iframe';
-          iframe.src = app.url;
-          iframe.title = app.name;
-          iframeContainer.appendChild(iframe);
-        });
-      }
-
-      // Hàm để hiện app được chọn và ẩn các app khác
-      function showApp(index) {
-        // Ẩn tất cả iframe và bỏ active các nút
-        document.querySelectorAll('.app-iframe').forEach(iframe => iframe.classList.remove('active'));
-        document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
-
-        // Hiện iframe và active nút được chọn
-        const targetIframe = document.getElementById(`iframe-app-${index}`);
-        const targetButton = document.getElementById(`btnApp${index}`);
-        if (targetIframe) targetIframe.classList.add('active');
-        if (targetButton) targetButton.classList.add('active');
-      }
-      
-      function saveAppsToStorage() { localStorage.setItem('customAppList', JSON.stringify(appList)); }
-      function loadAppsFromStorage() {
-        const savedApps = localStorage.getItem('customAppList');
-        appList = savedApps ? JSON.parse(savedApps) : [...defaultApps];
-      }
-
-      function openAddAppModal() { modal.style.display = 'flex'; }
-      function closeAddAppModal() { modal.style.display = 'none'; }
-      
-      function saveNewApp() {
-        const nameInput = document.getElementById('new-app-name');
-        const urlInput = document.getElementById('new-app-url');
-        if (nameInput.value.trim() && urlInput.value.trim()) {
-          appList.push({ name: nameInput.value.trim(), url: urlInput.value.trim() });
-          saveAppsToStorage();
-          renderAppInfrastructure(); // Vẽ lại toàn bộ cấu trúc
-          showApp(appList.length - 1); // Hiển thị app vừa thêm
-          nameInput.value = ''; urlInput.value = ''; closeAddAppModal();
-        } else { alert('Vui lòng nhập đầy đủ Tên và URL.'); }
-      }
-      
-      function deleteApp(index) {
-        if (confirm(`Bạn có chắc muốn xóa ứng dụng "${appList[index].name}" không?`)) {
-          const isDeletingActiveApp = document.getElementById(`btnApp${index}`).classList.contains('active');
-          appList.splice(index, 1);
-          saveAppsToStorage();
-          renderAppInfrastructure();
-          // Nếu app bị xóa là app đang active, tải app đầu tiên. Nếu không còn app nào thì thôi.
-          if (isDeletingActiveApp && appList.length > 0) {
-            showApp(0);
-          }
-        }
-      }
-
-      // Hàm đóng/mở sidebar
-      function toggleSidebar() {
-        sidebar.classList.toggle('collapsed');
-        document.body.classList.toggle('sidebar-open');
-      }
-
-      // Gán sự kiện click cho nút toggle
-      toggleBtn.addEventListener('click', toggleSidebar);
-
-      // Gán sự kiện nhấn phím cho toàn bộ cửa sổ
-      window.addEventListener('keydown', (event) => {
-        // Kiểm tra nếu phím được nhấn là 'Escape'
-        if (event.key === 'Escape') {
-          // Chỉ thực hiện khi cửa sổ modal không đang hiển thị
-          if (modal.style.display !== 'flex') {
-            // Gọi hàm để đóng/mở sidebar
-            toggleSidebar();
-          }
-        }
-      });
-
-      // Hàm khởi tạo khi trang được tải
       document.addEventListener("DOMContentLoaded", function() {
-        loadAppsFromStorage();
-        renderAppInfrastructure();
-        if (appList.length > 0) {
-          showApp(0); // Mặc định hiển thị app đầu tiên
+        const navList = document.getElementById('nav-list');
+        const iframeContainer = document.getElementById('iframe-container');
+        const sidebar = document.querySelector('.sidebar');
+        const toggleBtn = document.getElementById('menu-toggle');
+
+        // Định nghĩa cấu trúc menu tĩnh
+        const menuItems = [
+          { 
+              name: "Dashboard", 
+              icon: `<animated-icons src="https://animatedicons.co/get-icon?name=analytics&style=minimalistic&token=" trigger="on-hover" attributes='{"variationThumbColour":"#536DFE","variationName":"Two Tone","variationNumber":2,"numberOfGroups":2,"backgroundIsGroup":false,"strokeWidth":1,"defaultColours":{"group-1":"#000000","group-2":"#536DFE","background":"#FFFFFF"}}'></animated-icons>`,
+              url: null 
+          },
+          { 
+              name: "Vận Hành", 
+              icon: `<animated-icons src="https://animatedicons.co/get-icon?name=Warehouse&style=minimalistic&token=cd5fc961-b158-4062-bac4-bc62dc29ca43" trigger="on-hover" attributes='{"variationThumbColour":"#536DFE","variationName":"Two Tone","variationNumber":2,"numberOfGroups":2,"backgroundIsGroup":false,"strokeWidth":1,"defaultColours":{"group-1":"#000000","group-2":"#536DFE","background":"#FFFFFF"}}'></animated-icons>`,
+              url: "https://script.google.com/macros/s/AKfycbztF4W6WHWAHmluhINyDbrXYfk62Pq_ODOejCI6UaSVL9vMIEdUPiv90DHZPDm8kQ0t/exec",
+              iframeId: 'van-hanh'
+          },
+          { 
+              name: "Import", 
+              icon: `<animated-icons src="https://animatedicons.co/get-icon?name=Import&style=minimalistic&token=efd076fb-f2f3-4fa2-bfe3-0a4e2aeaec8c" trigger="on-hover" attributes='{"variationThumbColour":"#536DFE","variationName":"Two Tone","variationNumber":2,"numberOfGroups":2,"backgroundIsGroup":false,"strokeWidth":1,"defaultColours":{"group-1":"#000000","group-2":"#036D4AFF","background":"#FFFFFF"}}'></animated-icons>`,
+              url: null
+          },
+          { 
+              name: "Export", 
+              icon: `<animated-icons src="https://animatedicons.co/get-icon?name=exit&style=minimalistic&token=6e09845f-509a-4b0a-a8b0-c47e168ad977" trigger="on-hover" attributes='{"variationThumbColour":"#536DFE","variationName":"Two Tone","variationNumber":2,"numberOfGroups":2,"backgroundIsGroup":false,"strokeWidth":1,"defaultColours":{"group-1":"#000000","group-2":"#C31212FF","background":"#FFFFFF"}}'></animated-icons>`,
+              url: "https://script.google.com/macros/s/AKfycbzyhcLvg4ZVhexKSP8m3dLjVqp2HSnJq4HRYkrytzlc04f33pzEW-hW0T4vDBdYdFp-4Q/exec",
+              iframeId: 'export'
+          },
+          { 
+              name: "Phiếu Nhập, Xuất", 
+              icon: `<animated-icons src="https://animatedicons.co/get-icon?name=printer&style=minimalistic&token=9fb9dcca-ad9e-4d73-b742-e34171cdda58" trigger="on-hover" attributes='{"variationThumbColour":"#536DFE","variationName":"Two Tone","variationNumber":2,"numberOfGroups":2,"backgroundIsGroup":false,"strokeWidth":1,"defaultColours":{"group-1":"#000000","group-2":"#536DFE","background":"#FFFFFF"}}'></animated-icons>`,
+              url: null
+          }
+        ];
+
+        // 1. Dựng Menu và các Iframe cần thiết
+        menuItems.forEach((item) => {
+            const button = document.createElement('button');
+            button.className = 'nav-button';
+            
+            // Chỉnh lại kích thước icon và đặt trigger là 'on-hover' cho mượt
+            const cleanIcon = item.icon
+              .replace(/height="\d+"/i, 'height="24"')
+              .replace(/width="\d+"/i, 'width="24"');
+
+            button.innerHTML = `${cleanIcon}<span>${item.name}</span>`;
+            
+            if (item.url && item.iframeId) {
+                // Tạo iframe cho các app có sẵn link
+                const iframe = document.createElement('iframe');
+                iframe.id = `iframe-${item.iframeId}`;
+                iframe.className = 'app-iframe';
+                iframe.dataset.src = item.url; // Dùng dataset để tải lazy
+                iframe.title = item.name;
+                iframeContainer.appendChild(iframe);
+
+                // Gán sự kiện click
+                button.dataset.iframeTarget = `iframe-${item.iframeId}`;
+                button.onclick = () => showApp(`iframe-${item.iframeId}`);
+            } else {
+                // Với các app chưa phát triển
+                button.onclick = () => alert(`Chức năng "${item.name}" đang được phát triển. Vui lòng quay lại sau!`);
+                button.style.cursor = 'not-allowed'; // Thay đổi con trỏ chuột
+            }
+            navList.appendChild(button);
+        });
+
+        // 2. Hàm hiển thị App được chọn
+        function showApp(iframeId) {
+            // Hủy active tất cả
+            document.querySelectorAll('.app-iframe').forEach(iframe => iframe.classList.remove('active'));
+            document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
+
+            // Active mục tiêu
+            const targetIframe = document.getElementById(iframeId);
+            const targetButton = document.querySelector(`[data-iframe-target="${iframeId}"]`);
+
+            if (targetIframe) {
+                // Tải lazy: chỉ gán src lần đầu tiên được click
+                if (!targetIframe.src) {
+                    targetIframe.src = targetIframe.dataset.src;
+                }
+                targetIframe.classList.add('active');
+            }
+            if (targetButton) {
+                targetButton.classList.add('active');
+            }
+        }
+        
+        // 3. Logic đóng/mở sidebar
+        function toggleSidebar() {
+            sidebar.classList.toggle('collapsed');
+            document.body.classList.toggle('sidebar-open');
+        }
+        toggleBtn.addEventListener('click', toggleSidebar);
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                toggleSidebar();
+            }
+        });
+
+        // 4. Trạng thái khởi đầu: hiển thị app đầu tiên có link
+        const firstApp = menuItems.find(item => item.url && item.iframeId);
+        if (firstApp) {
+            showApp(`iframe-${firstApp.iframeId}`);
         }
       });
     </script>
 
   </body>
 </html>
+

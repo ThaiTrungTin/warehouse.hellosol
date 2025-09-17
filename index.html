@@ -20,7 +20,7 @@
         --hover-bg-color: #f1f3f4;
         --border-color: #e0e0e0;
       }
-      
+
       body {
         font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
         margin: 0; 
@@ -46,13 +46,22 @@
         margin-left: 0;
       }
       .sidebar.collapsed { margin-left: calc(-1 * var(--sidebar-width) + 20px); }
-      
+
       .sidebar-header {
         text-align: center;
         padding-bottom: 20px;
         margin-bottom: 15px;
         border-bottom: 1px solid var(--border-color);
       }
+      .sidebar-header h2 {
+        margin: 0;
+        color: var(--primary-color);
+        font-size: 20px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
 
       /* ĐIỀU CHỈNH KÍCH THƯỚC LOGO */
       .sidebar-header img {
@@ -60,9 +69,9 @@
         height: auto;     /* Chiều cao tự động theo tỷ lệ */
         margin: 0 auto;   /* Căn giữa logo */
       }
-      
+
       .nav-list { flex-grow: 1; overflow-y: auto; }
-      
+
       .nav-button {
         background-color: transparent; 
         color: var(--text-color-dark); 
@@ -89,7 +98,7 @@
         color: var(--primary-color); 
         font-weight: 700; 
       }
-      
+
       /* Căn chỉnh kích thước cho icon (bao gồm cả SVG và animated-icons) */
       .nav-button animated-icons, .sidebar-header animated-icons, .nav-button svg {
         width: 24px;
@@ -99,9 +108,9 @@
         align-items: center;
         justify-content: center;
       }
-      
+
       .main-content { flex-grow: 1; position: relative; }
-      
+
       .menu-toggle-btn {
         position: fixed; top: 15px; left: 15px; background: #ffffff; border: none; cursor: pointer;
         padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
@@ -121,564 +130,144 @@
         background-color: #ffffff; /* Thêm màu nền cho iframe */
       }
       .app-iframe.active { display: block; }
-
-      /* =========================================== */
-      /* STYLES MỚI CHO GIAO DIỆN ĐĂNG NHẬP/ĐĂNG KÝ */
-      /* =========================================== */
-      .hidden {
-        display: none !important;
-      }
-      
-      #auth-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #0d1117;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-        color: #e6edf3;
-      }
-
-      .auth-wrapper {
-        width: 800px;
-        max-width: 90%;
-        height: 500px;
-        background: #161b22;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(0, 199, 255, 0.4);
-        display: flex;
-        overflow: hidden;
-      }
-
-      .auth-panel {
-        flex: 1;
-        padding: 40px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-
-      .auth-panel.welcome-panel {
-        background: linear-gradient(135deg, #00c7ff, #0a4d68);
-        text-align: center;
-      }
-      .welcome-panel h2 {
-        font-size: 2.5rem;
-        margin-bottom: 15px;
-        font-weight: 700;
-        color: #ffffff;
-      }
-      .welcome-panel p {
-        font-size: 1rem;
-        color: #d1f4ff;
-        line-height: 1.6;
-      }
-
-      .auth-form-container {
-        position: relative;
-      }
-
-      .auth-form {
-        width: 100%;
-      }
-
-      .auth-form h3 {
-        font-size: 2rem;
-        margin-bottom: 25px;
-        text-align: center;
-        font-weight: 600;
-        color: #e6edf3;
-      }
-
-      .input-group {
-        position: relative;
-        margin-bottom: 20px;
-      }
-
-      .auth-input {
-        width: 100%;
-        padding: 12px 12px 12px 40px;
-        background: #0d1117;
-        border: 1px solid #30363d;
-        border-radius: 8px;
-        color: #e6edf3;
-        font-size: 1rem;
-        transition: border-color 0.3s, box-shadow 0.3s;
-      }
-      .auth-input:focus {
-        outline: none;
-        border-color: #00c7ff;
-        box-shadow: 0 0 0 3px rgba(0, 199, 255, 0.2);
-      }
-
-      .input-icon {
-        position: absolute;
-        top: 50%;
-        left: 12px;
-        transform: translateY(-50%);
-        color: #8b949e;
-      }
-
-      .auth-button {
-        width: 100%;
-        padding: 12px;
-        border: none;
-        border-radius: 8px;
-        background: linear-gradient(90deg, #00c7ff, #00a2d9);
-        color: #ffffff;
-        font-size: 1.1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.3s;
-        margin-top: 10px;
-      }
-      .auth-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(0, 199, 255, 0.3);
-      }
-      .auth-button:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
-
-      .auth-switch-link {
-        text-align: center;
-        margin-top: 20px;
-        font-size: 0.9rem;
-      }
-      .auth-switch-link a {
-        color: #00c7ff;
-        text-decoration: none;
-        font-weight: 600;
-        cursor: pointer;
-      }
-      .auth-switch-link a:hover {
-        text-decoration: underline;
-      }
-      #auth-error-message {
-        color: #ff7b72;
-        text-align: center;
-        min-height: 20px;
-        margin-bottom: 10px;
-        font-size: 0.9rem;
-      }
-      
-      .spinner {
-        width: 20px;
-        height: 20px;
-        border: 2px solid #fff;
-        border-bottom-color: transparent;
-        border-radius: 50%;
-        display: inline-block;
-        box-sizing: border-box;
-        animation: rotation 1s linear infinite;
-      }
-      @keyframes rotation {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-
-      /* User Profile & Logout */
-      #user-profile {
-        margin-top: auto; /* Đẩy xuống cuối sidebar */
-        padding-top: 15px;
-        border-top: 1px solid var(--border-color);
-      }
     </style>
   </head>
-  <body>
+  <body class="sidebar-open">
 
-    <!-- =========================================== -->
-    <!-- CONTAINER MỚI CHO GIAO DIỆN ĐĂNG NHẬP/ĐĂNG KÝ -->
-    <!-- =========================================== -->
-    <div id="auth-container">
-      <div class="auth-wrapper">
-        <div class="auth-panel welcome-panel">
-          <h2>WELCOME!</h2>
-          <p>Hệ thống quản lý kho HelloSol. Vui lòng đăng nhập để tiếp tục.</p>
-        </div>
-        <div class="auth-panel auth-form-container">
-          <!-- Form Đăng nhập -->
-          <form id="login-form" class="auth-form">
-            <h3>Đăng Nhập</h3>
-            <div id="login-error" class="auth-error-message"></div>
-            <div class="input-group">
-              <span class="input-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/></svg></span>
-              <input type="email" id="login-gmail" class="auth-input" placeholder="Email" required>
-            </div>
-            <div class="input-group">
-              <span class="input-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg></span>
-              <input type="password" id="login-password" class="auth-input" placeholder="Mật khẩu" required>
-            </div>
-            <button type="submit" class="auth-button">Đăng Nhập</button>
-            <p class="auth-switch-link">Chưa có tài khoản? <a id="show-signup">Đăng ký ngay</a></p>
-          </form>
+    <button id="menu-toggle" class="menu-toggle-btn" title="Đóng/Mở menu (phím ESC)">
+      <svg width="24" height="24" viewBox="0 0 24 24"><path d="M3 12H21" stroke="#3c4043" stroke-width="2" stroke-linecap="round"/><path d="M3 6H21" stroke="#3c4043" stroke-width="2" stroke-linecap="round"/><path d="M3 18H21" stroke="#3c4043" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
 
-          <!-- Form Đăng Ký -->
-          <form id="signup-form" class="auth-form hidden">
-            <h3>Đăng Ký</h3>
-            <div id="signup-error" class="auth-error-message"></div>
-            <div class="input-group">
-               <span class="input-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/></svg></span>
-              <input type="text" id="signup-name" class="auth-input" placeholder="Họ và Tên" required>
-            </div>
-            <div class="input-group">
-               <span class="input-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/></svg></span>
-              <input type="email" id="signup-gmail" class="auth-input" placeholder="Email" required>
-            </div>
-            <div class="input-group">
-              <span class="input-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg></span>
-              <input type="password" id="signup-password" class="auth-input" placeholder="Mật khẩu" required>
-            </div>
-            <button type="submit" class="auth-button">Gửi Mã Xác Minh</button>
-            <p class="auth-switch-link">Đã có tài khoản? <a id="show-login">Đăng nhập</a></p>
-          </form>
-
-          <!-- Form Xác Minh -->
-          <form id="verify-form" class="auth-form hidden">
-             <h3>Xác Minh Email</h3>
-             <p id="verify-message" style="text-align:center; font-size:0.9rem; margin-bottom:15px;"></p>
-             <div id="verify-error" class="auth-error-message"></div>
-             <div class="input-group">
-                <span class="input-icon">#</span>
-                <input type="text" id="verify-code" class="auth-input" placeholder="Nhập mã 6 chữ số" required>
-             </div>
-             <button type="submit" class="auth-button">Xác Nhận & Đăng Ký</button>
-          </form>
-        </div>
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h2>
+           <animated-icons src="https://animatedicons.co/get-icon?name=home&style=minimalistic&token=1de785be-f87f-4fdd-9cda-efb65431763b" trigger="on-hover" attributes='{"variationThumbColour":"#536DFE","variationName":"Two Tone","variationNumber":2,"numberOfGroups":2,"backgroundIsGroup":false,"strokeWidth":1,"defaultColours":{"group-1":"#000000","group-2":"#F50808FF","background":"#FFFFFF"}}'></animated-icons>
+          <span>Hello Sol</span>
+        </h2>
+        <img src="data:image/png;base64,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" alt="HelloSol Warehouse Logo" style="max-height: 070px;">
       </div>
+      <!-- Menu tĩnh sẽ được JS render vào đây -->
+      <div id="nav-list" class="nav-list"></div>
     </div>
 
-    <!-- ======================================================= -->
-    <!-- BỌC TOÀN BỘ GIAO DIỆN HIỆN CÓ VÀO CONTAINER NÀY -->
-    <!-- ======================================================= -->
-    <div id="app-container" class="hidden">
-      <button id="menu-toggle" class="menu-toggle-btn" title="Đóng/Mở menu (phím ESC)">
-        <svg width="24" height="24" viewBox="0 0 24 24"><path d="M3 12H21" stroke="#3c4043" stroke-width="2" stroke-linecap="round"/><path d="M3 6H21" stroke="#3c4043" stroke-width="2" stroke-linecap="round"/><path d="M3 18H21" stroke="#3c4043" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
-      
-      <div class="sidebar">
-        <div class="sidebar-header">
-          <img src="data:image/png;base64,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" alt="HelloSol Warehouse Logo" style="max-height: 070px;">
-        </div>
-        <!-- Menu tĩnh sẽ được JS render vào đây -->
-        <div id="nav-list" class="nav-list"></div>
-
-        <!-- THÊM MỚI: Khu vực thông tin người dùng và đăng xuất -->
-        <div id="user-profile"></div>
-      </div>
-
-      <div class="main-content">
-          <div id="iframe-container"></div>
-      </div>
+    <div class="main-content">
+        <div id="iframe-container"></div>
     </div>
 
-    <!-- SCRIPT ĐƯỢC VIẾT LẠI HOÀN TOÀN ĐỂ XỬ LÝ LOGIC ĐĂNG NHẬP -->
+    <!-- SCRIPT ĐÃ ĐƯỢC VIẾT LẠI HOÀN TOÀN -->
+    <!-- SCRIPT ĐÃ ĐƯỢỢC VIẾT LẠI HOÀN TOÀN -->
     <script>
-      const App = {
-        // Trạng thái của ứng dụng
-        state: {
-          currentUser: null,
-          tempSignupData: null,
-        },
+      document.addEventListener("DOMContentLoaded", function() {
+        const navList = document.getElementById('nav-list');
+        const iframeContainer = document.getElementById('iframe-container');
+        const sidebar = document.querySelector('.sidebar');
+        const toggleBtn = document.getElementById('menu-toggle');
 
-        // DOM Elements
-        elements: {
-          authContainer: document.getElementById('auth-container'),
-          appContainer: document.getElementById('app-container'),
-          loginForm: document.getElementById('login-form'),
-          signupForm: document.getElementById('signup-form'),
-          verifyForm: document.getElementById('verify-form'),
-          navList: document.getElementById('nav-list'),
-          iframeContainer: document.getElementById('iframe-container'),
-          sidebar: document.querySelector('.sidebar'),
-          toggleBtn: document.getElementById('menu-toggle'),
-          userProfile: document.getElementById('user-profile'),
-        },
-        
-        // =======================================================
-        // MỚI: Cầu nối giao tiếp với Google Apps Script
-        // =======================================================
-        callGoogleScript(functionName, args) {
-          return new Promise((resolve, reject) => {
-            const requestId = `req_${Date.now()}_${Math.random()}`;
-            
-            const messageListener = (event) => {
-              // Chỉ chấp nhận tin nhắn từ cửa sổ cha (loader.html)
-              if (event.source !== window.parent) return;
-              
-              // DEBUG: Ghi lại toàn bộ dữ liệu tin nhắn nhận được để xem nó là gì
-              console.log("Received message from parent:", event.data);
-
-              const response = event.data;
-              if (response && response.requestId === requestId) {
-                window.removeEventListener('message', messageListener);
-                if (response.status === 'success') {
-                  resolve(response.payload);
-                } else {
-                  // SỬA LỖI: Xử lý payload lỗi một cách an toàn hơn.
-                  // Giờ đây, `response.payload` được coi là một chuỗi tin nhắn đơn giản.
-                  const errorMessage = response.payload || 'Lỗi không xác định từ Apps Script';
-                  const error = new Error(errorMessage);
-                  reject(error);
-                }
-              }
-            };
-            
-            window.addEventListener('message', messageListener);
-            
-            // Gửi yêu cầu đến cửa sổ cha (loader.html)
-            // Trong môi trường thực tế, '*' nên được thay thế bằng URL của Apps Script
-            window.parent.postMessage({
-              type: 'googleScriptRun',
-              functionName,
-              args,
-              requestId
-            }, '*');
-          });
-        },
-
-
-        // Khởi tạo ứng dụng
-        init() {
-          this.addEventListeners();
-          this.checkSession();
-        },
-
-        // Kiểm tra phiên đăng nhập đã lưu
-        checkSession() {
-          const user = sessionStorage.getItem('currentUser');
-          if (user) {
-            this.state.currentUser = JSON.parse(user);
-            this.showMainApp();
-          } else {
-            this.showAuth();
+        // Định nghĩa cấu trúc menu tĩnh
+        const menuItems = [
+          { 
+              name: "Dashboard", 
+              icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>`,
+              url: null 
+          },
+          { 
+              name: "Vận Hành", 
+              icon: `<animated-icons src="https://animatedicons.co/get-icon?name=Warehouse&style=minimalistic&token=cd5fc961-b158-4062-bac4-bc62dc29ca43" trigger="on-hover" attributes='{"variationThumbColour":"#536DFE","variationName":"Two Tone","variationNumber":2,"numberOfGroups":2,"backgroundIsGroup":false,"strokeWidth":1,"defaultColours":{"group-1":"#000000","group-2":"#536DFE","background":"#FFFFFF"}}'></animated-icons>`,
+              url: "https://script.google.com/macros/s/AKfycbztF4W6WHWAHmluhINyDbrXYfk62Pq_ODOejCI6UaSVL9vMIEdUPiv90DHZPDm8kQ0t/exec",
+              iframeId: 'van-hanh'
+          },
+          { 
+              name: "Import", 
+              icon: `<animated-icons src="https://animatedicons.co/get-icon?name=Import&style=minimalistic&token=efd076fb-f2f3-4fa2-bfe3-0a4e2aeaec8c" trigger="on-hover" attributes='{"variationThumbColour":"#536DFE","variationName":"Two Tone","variationNumber":2,"numberOfGroups":2,"backgroundIsGroup":false,"strokeWidth":1,"defaultColours":{"group-1":"#000000","group-2":"#036D4AFF","background":"#FFFFFF"}}'></animated-icons>`,
+              url: "https://script.google.com/macros/s/AKfycbwyK6PYEr08XF3eSQVmvjTK62tiF_d3lz4ttbH6vG3I1ifRDtGNBtnlM1Scw9jNSD6K/exec",
+              iframeId: 'import'
+          },
+          { 
+              name: "Export", 
+              icon: `<animated-icons src="https://animatedicons.co/get-icon?name=exit&style=minimalistic&token=6e09845f-509a-4b0a-a8b0-c47e168ad977" trigger="on-hover" attributes='{"variationThumbColour":"#536DFE","variationName":"Two Tone","variationNumber":2,"numberOfGroups":2,"backgroundIsGroup":false,"strokeWidth":1,"defaultColours":{"group-1":"#000000","group-2":"#C31212FF","background":"#FFFFFF"}}'></animated-icons>`,
+              url: "https://script.google.com/macros/s/AKfycbzyhcLvg4ZVhexKSP8m3dLjVqp2HSnJq4HRYkrytzlc04f33pzEW-hW0T4vDBdYdFp-4Q/exec",
+              iframeId: 'export'
+          },
+          { 
+              name: "Phiếu Nhập, Xuất", 
+              icon: `<animated-icons src="https://animatedicons.co/get-icon?name=printer&style=minimalistic&token=9fb9dcca-ad9e-4d73-b742-e34171cdda58" trigger="on-hover" attributes='{"variationThumbColour":"#536DFE","variationName":"Two Tone","variationNumber":2,"numberOfGroups":2,"backgroundIsGroup":false,"strokeWidth":1,"defaultColours":{"group-1":"#000000","group-2":"#536DFE","background":"#FFFFFF"}}'></animated-icons>`,
+              url: null
           }
-        },
+        ];
 
-        // Gán các sự kiện
-        addEventListeners() {
-          document.getElementById('show-signup').addEventListener('click', () => this.toggleForms('signup'));
-          document.getElementById('show-login').addEventListener('click', () => this.toggleForms('login'));
-          this.elements.loginForm.addEventListener('submit', this.handleLogin.bind(this));
-          this.elements.signupForm.addEventListener('submit', this.handleSignup.bind(this));
-          this.elements.verifyForm.addEventListener('submit', this.handleVerify.bind(this));
-          this.elements.toggleBtn.addEventListener('click', this.toggleSidebar.bind(this));
-          window.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') this.toggleSidebar();
-          });
-        },
+        // 1. Dựng Menu và các Iframe cần thiết
+        menuItems.forEach((item) => {
+            const button = document.createElement('button');
+            button.className = 'nav-button';
 
-        // Ẩn/hiện các form
-        toggleForms(formToShow) {
-          this.elements.loginForm.classList.add('hidden');
-          this.elements.signupForm.classList.add('hidden');
-          this.elements.verifyForm.classList.add('hidden');
-          document.getElementById(`${formToShow}-form`).classList.remove('hidden');
-        },
+            // Chỉnh lại kích thước icon và đặt trigger là 'on-hover' cho mượt
+            const cleanIcon = item.icon
+              .replace(/height="\d+"/i, 'height="24"')
+              .replace(/width="\d+"/i, 'width="24"');
 
-        // Xử lý Đăng nhập
-        handleLogin(e) {
-          e.preventDefault();
-          const gmail = document.getElementById('login-gmail').value;
-          const password = document.getElementById('login-password').value;
-          this.setLoading('login-form', true);
-          
-          this.callGoogleScript('checkLogin', { gmail, password })
-            .then(result => {
-              this.setLoading('login-form', false);
-              if (result.success) {
-                this.state.currentUser = result.data;
-                sessionStorage.setItem('currentUser', JSON.stringify(result.data));
-                this.showMainApp();
-              } else {
-                this.showError('login-error', result.data);
-              }
-            })
-            .catch(error => {
-              this.setLoading('login-form', false);
-              this.showError('login-error', 'Lỗi kết nối. Vui lòng thử lại.');
-              console.error(error);
-            });
-        },
-        
-        // Xử lý Đăng ký (gửi mã)
-        handleSignup(e) {
-          e.preventDefault();
-          const name = document.getElementById('signup-name').value;
-          const gmail = document.getElementById('signup-gmail').value;
-          const password = document.getElementById('signup-password').value;
+            button.innerHTML = `${cleanIcon}<span>${item.name}</span>`;
 
-          this.state.tempSignupData = { name, gmail, password };
-          this.setLoading('signup-form', true);
-          
-          this.callGoogleScript('sendVerificationCode', gmail)
-            .then(result => {
-              this.setLoading('signup-form', false);
-              if (result.success) {
-                document.getElementById('verify-message').textContent = `Mã xác minh đã được gửi tới ${gmail}`;
-                this.toggleForms('verify');
-              } else {
-                this.showError('signup-error', result.data);
-              }
-            })
-            .catch(error => {
-                this.setLoading('signup-form', false);
-                this.showError('signup-error', 'Lỗi gửi mã. Vui lòng thử lại.');
-                console.error(error);
-            });
-        },
+            if (item.url && item.iframeId) {
+                // Tạo iframe cho các app có sẵn link
+                const iframe = document.createElement('iframe');
+                iframe.id = `iframe-${item.iframeId}`;
+                iframe.className = 'app-iframe';
+                iframe.dataset.src = item.url; // Dùng dataset để tải lazy
+                iframe.title = item.name;
+                iframeContainer.appendChild(iframe);
 
-        // Xử lý Xác minh mã
-        handleVerify(e) {
-          e.preventDefault();
-          const code = document.getElementById('verify-code').value;
-          const userData = { ...this.state.tempSignupData, code };
-          this.setLoading('verify-form', true);
+                // Gán sự kiện click
+                button.dataset.iframeTarget = `iframe-${item.iframeId}`;
+                button.onclick = () => showApp(`iframe-${item.iframeId}`);
+            } else {
+                // Với các app chưa phát triển
+                button.onclick = () => alert(`Chức năng "${item.name}" đang được phát triển. Vui lòng quay lại sau!`);
+                button.style.cursor = 'not-allowed'; // Thay đổi con trỏ chuột
+            }
+            navList.appendChild(button);
+        });
 
-          this.callGoogleScript('registerUser', userData)
-            .then(result => {
-                this.setLoading('verify-form', false);
-                if(result.success) {
-                    this.state.currentUser = result.data;
-                    sessionStorage.setItem('currentUser', JSON.stringify(result.data));
-                    this.showMainApp();
-                } else {
-                    this.showError('verify-error', result.data);
-                }
-            })
-            .catch(error => {
-                this.setLoading('verify-form', false);
-                this.showError('verify-error', 'Lỗi xác minh. Vui lòng thử lại.');
-                console.error(error);
-            });
-        },
-
-        // Xử lý Đăng xuất
-        handleLogout() {
-          sessionStorage.removeItem('currentUser');
-          this.state.currentUser = null;
-          window.location.reload();
-        },
-
-        // Hiển thị giao diện chính
-        showMainApp() {
-          this.elements.authContainer.classList.add('hidden');
-          this.elements.appContainer.classList.remove('hidden');
-          document.body.classList.add('sidebar-open');
-          this.buildMenu();
-          this.buildUserProfile();
-        },
-
-        // Hiển thị giao diện đăng nhập
-        showAuth() {
-          this.elements.authContainer.classList.remove('hidden');
-          this.elements.appContainer.classList.add('hidden');
-        },
-
-        // Dựng menu
-        buildMenu() {
-            this.elements.navList.innerHTML = '';
-            this.elements.iframeContainer.innerHTML = '';
-            const menuItems = [
-              { name: "Dashboard", icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>`, url: null },
-              { name: "Vận Hành", icon: `<animated-icons src="https://animatedicons.co/get-icon?name=Warehouse&style=minimalistic&token=cd5fc961-b158-4062-bac4-bc62dc29ca43" trigger="on-hover" attributes='{"variationThumbColour":"#536DFE","variationName":"Two Tone","variationNumber":2,"numberOfGroups":2,"backgroundIsGroup":false,"strokeWidth":1,"defaultColours":{"group-1":"#000000","group-2":"#536DFE","background":"#FFFFFF"}}'></animated-icons>`, url: "https://script.google.com/macros/s/AKfycbztF4W6WHWAHmluhINyDbrXYfk62Pq_ODOejCI6UaSVL9vMIEdUPiv90DHZPDm8kQ0t/exec", iframeId: 'van-hanh' },
-              { name: "Import", icon: `<animated-icons src="https://animatedicons.co/get-icon?name=Import&style=minimalistic&token=efd076fb-f2f3-4fa2-bfe3-0a4e2aeaec8c" trigger="on-hover" attributes='{"variationThumbColour":"#536DFE","variationName":"Two Tone","variationNumber":2,"numberOfGroups":2,"backgroundIsGroup":false,"strokeWidth":1,"defaultColours":{"group-1":"#000000","group-2":"#036D4AFF","background":"#FFFFFF"}}'></animated-icons>`, url: "https://script.google.com/macros/s/AKfycbwyK6PYEr08XF3eSQVmvjTK62tiF_d3lz4ttbH6vG3I1ifRDtGNBtnlM1Scw9jNSD6K/exec", iframeId: 'import' },
-              { name: "Export", icon: `<animated-icons src="https://animatedicons.co/get-icon?name=exit&style=minimalistic&token=6e09845f-509a-4b0a-a8b0-c47e168ad977" trigger="on-hover" attributes='{"variationThumbColour":"#536DFE","variationName":"Two Tone","variationNumber":2,"numberOfGroups":2,"backgroundIsGroup":false,"strokeWidth":1,"defaultColours":{"group-1":"#000000","group-2":"#C31212FF","background":"#FFFFFF"}}'></animated-icons>`, url: "https://script.google.com/macros/s/AKfycbzyhcLvg4ZVhexKSP8m3dLjVqp2HSnJq4HRYkrytzlc04f33pzEW-hW0T4vDBdYdFp-4Q/exec", iframeId: 'export' }
-            ];
-
-            menuItems.forEach((item) => {
-                const button = document.createElement('button');
-                button.className = 'nav-button';
-                button.innerHTML = `${item.icon.replace(/height="\d+"/i, 'height="24"').replace(/width="\d+"/i, 'width="24"')}<span>${item.name}</span>`;
-                if (item.url && item.iframeId) {
-                    const iframe = document.createElement('iframe');
-                    iframe.id = `iframe-${item.iframeId}`;
-                    iframe.className = 'app-iframe';
-                    iframe.dataset.src = item.url;
-                    iframe.title = item.name;
-                    this.elements.iframeContainer.appendChild(iframe);
-                    button.dataset.iframeTarget = `iframe-${item.iframeId}`;
-                    button.onclick = () => this.showIframeApp(`iframe-${item.iframeId}`);
-                } else {
-                    button.onclick = () => alert(`Chức năng "${item.name}" đang được phát triển.`);
-                    button.style.cursor = 'not-allowed';
-                }
-                this.elements.navList.appendChild(button);
-            });
-            const firstApp = menuItems.find(item => item.url && item.iframeId);
-            if (firstApp) this.showIframeApp(`iframe-${firstApp.iframeId}`);
-        },
-        
-        // Dựng thông tin người dùng và nút đăng xuất
-        buildUserProfile() {
-            const user = this.state.currentUser;
-            if (!user) return;
-            this.elements.userProfile.innerHTML = `
-                <button class="nav-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16" style="flex-shrink:0;"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/></svg>
-                    <div style="line-height:1.2;">
-                        <span style="font-weight:700; display:block;">${user.name}</span>
-                        <small style="font-weight:400; color:#5f6368;">${user.gmail}</small>
-                    </div>
-                </button>
-                <button id="logout-btn" class="nav-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16" style="flex-shrink:0;"><path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/><path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/></svg>
-                    <span>Đăng xuất</span>
-                </button>
-            `;
-            document.getElementById('logout-btn').addEventListener('click', this.handleLogout.bind(this));
-        },
-        
-        // Hiện iframe được chọn
-        showIframeApp(iframeId) {
+        // 2. Hàm hiển thị App được chọn
+        function showApp(iframeId) {
+            // Hủy active tất cả
             document.querySelectorAll('.app-iframe').forEach(iframe => iframe.classList.remove('active'));
             document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
+
+            // Active mục tiêu
             const targetIframe = document.getElementById(iframeId);
             const targetButton = document.querySelector(`[data-iframe-target="${iframeId}"]`);
+
             if (targetIframe) {
-                if (!targetIframe.src) targetIframe.src = targetIframe.dataset.src;
+                // Tải lazy: chỉ gán src lần đầu tiên được click
+                if (!targetIframe.src) {
+                    targetIframe.src = targetIframe.dataset.src;
+                }
                 targetIframe.classList.add('active');
             }
-            if (targetButton) targetButton.classList.add('active');
-        },
-
-        // Logic đóng/mở sidebar
-        toggleSidebar() {
-            this.elements.sidebar.classList.toggle('collapsed');
-            document.body.classList.toggle('sidebar-open');
-        },
-
-        // Hiển thị/ẩn spinner và disable button
-        setLoading(formId, isLoading) {
-          const form = document.getElementById(formId);
-          const button = form.querySelector('.auth-button');
-          if (isLoading) {
-            button.disabled = true;
-            button.innerHTML = '<span class="spinner"></span>';
-          } else {
-            button.disabled = false;
-            if (formId === 'login-form') button.textContent = 'Đăng Nhập';
-            if (formId === 'signup-form') button.textContent = 'Gửi Mã Xác Minh';
-            if (formId === 'verify-form') button.textContent = 'Xác Nhận & Đăng Ký';
-          }
-        },
-        // Hiển thị thông báo lỗi
-        showError(elementId, message) {
-            document.getElementById(elementId).textContent = message;
+            if (targetButton) {
+                targetButton.classList.add('active');
+            }
         }
-      };
 
-      // Chạy ứng dụng khi DOM đã sẵn sàng
-      document.addEventListener("DOMContentLoaded", () => App.init());
+        // 3. Logic đóng/mở sidebar
+        function toggleSidebar() {
+            sidebar.classList.toggle('collapsed');
+            document.body.classList.toggle('sidebar-open');
+        }
+        toggleBtn.addEventListener('click', toggleSidebar);
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                toggleSidebar();
+            }
+        });
+
+        // 4. Trạng thái khởi đầu: hiển thị app đầu tiên có link
+        const firstApp = menuItems.find(item => item.url && item.iframeId);
+        if (firstApp) {
+            showApp(`iframe-${firstApp.iframeId}`);
+        }
+      });
     </script>
 
   </body>
 </html>
-
-
-

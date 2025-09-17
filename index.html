@@ -411,6 +411,9 @@
               // Chỉ chấp nhận tin nhắn từ cửa sổ cha (loader.html)
               if (event.source !== window.parent) return;
               
+              // DEBUG: Ghi lại toàn bộ dữ liệu tin nhắn nhận được để xem nó là gì
+              console.log("Received message from parent:", event.data);
+
               const response = event.data;
               if (response && response.requestId === requestId) {
                 window.removeEventListener('message', messageListener);
@@ -676,5 +679,6 @@
 
   </body>
 </html>
+
 
 

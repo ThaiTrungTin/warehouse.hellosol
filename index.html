@@ -393,13 +393,51 @@
           loginForm: document.getElementById('login-form'),
           signupForm: document.getElementById('signup-form'),
           verifyForm: document.getElementById('verify-form'),
-          // Thêm các elements khác...
           navList: document.getElementById('nav-list'),
           iframeContainer: document.getElementById('iframe-container'),
           sidebar: document.querySelector('.sidebar'),
           toggleBtn: document.getElementById('menu-toggle'),
           userProfile: document.getElementById('user-profile'),
         },
+        
+        // =======================================================
+        // MỚI: Cầu nối giao tiếp với Google Apps Script
+        // =======================================================
+        callGoogleScript(functionName, args) {
+          return new Promise((resolve, reject) => {
+            const requestId = `req_${Date.now()}_${Math.random()}`;
+            
+            const messageListener = (event) => {
+              // Chỉ chấp nhận tin nhắn từ cửa sổ cha (loader.html)
+              if (event.source !== window.parent) return;
+              
+              const response = event.data;
+              if (response && response.requestId === requestId) {
+                window.removeEventListener('message', messageListener);
+                if (response.status === 'success') {
+                  resolve(response.payload);
+                } else {
+                  // Chuyển đổi đối tượng lỗi thành Error để có stack trace
+                  const error = new Error(response.payload.message || 'Lỗi không xác định từ Apps Script');
+                  error.stack = response.payload.stack;
+                  reject(error);
+                }
+              }
+            };
+            
+            window.addEventListener('message', messageListener);
+            
+            // Gửi yêu cầu đến cửa sổ cha (loader.html)
+            // Trong môi trường thực tế, '*' nên được thay thế bằng URL của Apps Script
+            window.parent.postMessage({
+              type: 'googleScriptRun',
+              functionName,
+              args,
+              requestId
+            }, '*');
+          });
+        },
+
 
         // Khởi tạo ứng dụng
         init() {
@@ -420,16 +458,11 @@
 
         // Gán các sự kiện
         addEventListeners() {
-          // Links chuyển form
           document.getElementById('show-signup').addEventListener('click', () => this.toggleForms('signup'));
           document.getElementById('show-login').addEventListener('click', () => this.toggleForms('login'));
-          
-          // Submit forms
           this.elements.loginForm.addEventListener('submit', this.handleLogin.bind(this));
           this.elements.signupForm.addEventListener('submit', this.handleSignup.bind(this));
           this.elements.verifyForm.addEventListener('submit', this.handleVerify.bind(this));
-          
-          // Nút toggle sidebar
           this.elements.toggleBtn.addEventListener('click', this.toggleSidebar.bind(this));
           window.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') this.toggleSidebar();
@@ -451,8 +484,8 @@
           const password = document.getElementById('login-password').value;
           this.setLoading('login-form', true);
           
-          google.script.run
-            .withSuccessHandler(result => {
+          this.callGoogleScript('checkLogin', { gmail, password })
+            .then(result => {
               this.setLoading('login-form', false);
               if (result.success) {
                 this.state.currentUser = result.data;
@@ -462,12 +495,11 @@
                 this.showError('login-error', result.data);
               }
             })
-            .withFailureHandler(error => {
+            .catch(error => {
               this.setLoading('login-form', false);
               this.showError('login-error', 'Lỗi kết nối. Vui lòng thử lại.');
               console.error(error);
-            })
-            .checkLogin({ gmail, password });
+            });
         },
         
         // Xử lý Đăng ký (gửi mã)
@@ -477,12 +509,11 @@
           const gmail = document.getElementById('signup-gmail').value;
           const password = document.getElementById('signup-password').value;
 
-          // Lưu tạm dữ liệu để dùng sau khi xác minh
           this.state.tempSignupData = { name, gmail, password };
           this.setLoading('signup-form', true);
           
-          google.script.run
-            .withSuccessHandler(result => {
+          this.callGoogleScript('sendVerificationCode', gmail)
+            .then(result => {
               this.setLoading('signup-form', false);
               if (result.success) {
                 document.getElementById('verify-message').textContent = `Mã xác minh đã được gửi tới ${gmail}`;
@@ -491,12 +522,11 @@
                 this.showError('signup-error', result.data);
               }
             })
-            .withFailureHandler(error => {
+            .catch(error => {
                 this.setLoading('signup-form', false);
                 this.showError('signup-error', 'Lỗi gửi mã. Vui lòng thử lại.');
                 console.error(error);
-            })
-            .sendVerificationCode(gmail);
+            });
         },
 
         // Xử lý Xác minh mã
@@ -506,11 +536,10 @@
           const userData = { ...this.state.tempSignupData, code };
           this.setLoading('verify-form', true);
 
-          google.script.run
-            .withSuccessHandler(result => {
+          this.callGoogleScript('registerUser', userData)
+            .then(result => {
                 this.setLoading('verify-form', false);
                 if(result.success) {
-                    // Đăng ký thành công, tự động đăng nhập
                     this.state.currentUser = result.data;
                     sessionStorage.setItem('currentUser', JSON.stringify(result.data));
                     this.showMainApp();
@@ -518,19 +547,17 @@
                     this.showError('verify-error', result.data);
                 }
             })
-            .withFailureHandler(error => {
+            .catch(error => {
                 this.setLoading('verify-form', false);
                 this.showError('verify-error', 'Lỗi xác minh. Vui lòng thử lại.');
                 console.error(error);
-            })
-            .registerUser(userData);
+            });
         },
 
         // Xử lý Đăng xuất
         handleLogout() {
           sessionStorage.removeItem('currentUser');
           this.state.currentUser = null;
-          // Tải lại trang để reset toàn bộ trạng thái
           window.location.reload();
         },
 
@@ -549,7 +576,7 @@
           this.elements.appContainer.classList.add('hidden');
         },
 
-        // Dựng menu (lấy từ code cũ của bạn)
+        // Dựng menu
         buildMenu() {
             this.elements.navList.innerHTML = '';
             this.elements.iframeContainer.innerHTML = '';
@@ -603,7 +630,7 @@
             document.getElementById('logout-btn').addEventListener('click', this.handleLogout.bind(this));
         },
         
-        // Hiện iframe được chọn (code cũ)
+        // Hiện iframe được chọn
         showIframeApp(iframeId) {
             document.querySelectorAll('.app-iframe').forEach(iframe => iframe.classList.remove('active'));
             document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
@@ -616,7 +643,7 @@
             if (targetButton) targetButton.classList.add('active');
         },
 
-        // Logic đóng/mở sidebar (code cũ)
+        // Logic đóng/mở sidebar
         toggleSidebar() {
             this.elements.sidebar.classList.toggle('collapsed');
             document.body.classList.toggle('sidebar-open');
@@ -631,7 +658,6 @@
             button.innerHTML = '<span class="spinner"></span>';
           } else {
             button.disabled = false;
-            // Reset lại text của button
             if (formId === 'login-form') button.textContent = 'Đăng Nhập';
             if (formId === 'signup-form') button.textContent = 'Gửi Mã Xác Minh';
             if (formId === 'verify-form') button.textContent = 'Xác Nhận & Đăng Ký';

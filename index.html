@@ -417,9 +417,10 @@
                 if (response.status === 'success') {
                   resolve(response.payload);
                 } else {
-                  // Chuyển đổi đối tượng lỗi thành Error để có stack trace
-                  const error = new Error(response.payload.message || 'Lỗi không xác định từ Apps Script');
-                  error.stack = response.payload.stack;
+                  // SỬA LỖI: Xử lý payload lỗi một cách an toàn hơn.
+                  // Giờ đây, `response.payload` được coi là một chuỗi tin nhắn đơn giản.
+                  const errorMessage = response.payload || 'Lỗi không xác định từ Apps Script';
+                  const error = new Error(errorMessage);
                   reject(error);
                 }
               }
@@ -675,4 +676,5 @@
 
   </body>
 </html>
+
 
